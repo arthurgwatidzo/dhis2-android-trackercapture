@@ -504,8 +504,9 @@ public class ProgramOverviewFragment extends Fragment implements View.OnClickLis
                 incidentDateLabel.setText(data.getIncidentDateLabel());
                 incidentDateValue.setText(data.getIncidentDateValue());
             }
+            FailedItem failedItem = TrackerController.getFailedItem(FailedItem.ENROLLMENT, mForm.getEnrollment().getLocalId());
 
-            if (TrackerController.getFailedItem(FailedItem.ENROLLMENT, mForm.getEnrollment().getLocalId()) != null) {
+            if (failedItem != null && failedItem.getHttpStatusCode() >= 0) {
                 enrollmentServerStatus.setImageResource(R.drawable.ic_event_error);
             } else if (!mForm.getEnrollment().isFromServer()) {
                 enrollmentServerStatus.setImageResource(R.drawable.ic_offline);
@@ -542,7 +543,6 @@ public class ProgramOverviewFragment extends Fragment implements View.OnClickLis
             }
 
             final Map<Long, FailedItem> failedEvents = getFailedEvents();
-            boolean generateNextVisit = false;
 
             for (ProgramStageRow row : data.getProgramStageRows()) {
                 if (row instanceof ProgramStageLabelRow) {
@@ -551,34 +551,12 @@ public class ProgramOverviewFragment extends Fragment implements View.OnClickLis
                         stageRow.setButtonListener(this);
                     }
 
-                    if (generateNextVisit) {
-                        int stageCount = 0;
-
-                        if (stageRow.getEventRows() != null) {
-                            stageCount = stageRow.getEventRows().size();
-                        }
-                        if (stageCount < 1 || stageRow.getProgramStage().getRepeatable()) // should only be able to add more stages if stage is repeatable
-                            stageRow.setButtonListener(this);
-
-                        generateNextVisit = false;
-                    }
-
-                    if (stageRow.getProgramStage().getAllowGenerateNextVisit()) {
-                        if (stageRow.getEventRows() != null) {
-                            for (ProgramStageEventRow eventRow : stageRow.getEventRows()) {
-                                if (eventRow.getEvent().getStatus().equals(Event.STATUS_COMPLETED))
-                                    generateNextVisit = true;
-                            }
-                        }
-                    } else // if stage is not autogen and not repeatable, allow user to create exactly one event
-                    {
-                        if (!stageRow.getProgramStage().getRepeatable() && stageRow.getEventRows().size() < 1)
-                            stageRow.setButtonListener(this);
-                    }
                 } else if (row instanceof ProgramStageEventRow) {
                     final ProgramStageEventRow eventRow = (ProgramStageEventRow) row;
 
-                    if (TrackerController.getFailedItem(FailedItem.EVENT, eventRow.getEvent().getLocalId()) != null) {
+                    FailedItem failedItem1 = TrackerController.getFailedItem(FailedItem.EVENT, eventRow.getEvent().getLocalId());
+
+                    if (failedItem1 != null && failedItem1.getHttpStatusCode() >= 0) {
                         eventRow.setHasFailed(true);
                         eventRow.setMessage(failedEvents.get(eventRow.getEvent().getLocalId()).getErrorMessage());
                     } else if (eventRow.getEvent().isFromServer()) {
