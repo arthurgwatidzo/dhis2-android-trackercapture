@@ -288,7 +288,7 @@ public class ProgramOverviewFragment extends Fragment implements View.OnClickLis
         terminateButton = (Button) header.findViewById(R.id.terminate);
         followupButton = (ImageButton) header.findViewById(R.id.followupButton);
         profileButton = (ImageButton) header.findViewById(R.id.profile_button);
-        
+
         completeButton.setEnabled(false);
         terminateButton.setEnabled(false);
       //  completeButton.setOnClickListener(this);
