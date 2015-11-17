@@ -173,6 +173,7 @@ public class ProgramOverviewFragment extends Fragment implements View.OnClickLis
     private ProgramOverviewFragmentForm mForm;
 
     private INavigationHandler mNavigationHandler;
+    //@Arthur:Variables for AgeToday logic
     private String displayAge;
     private String ageToday;
 
@@ -289,10 +290,11 @@ public class ProgramOverviewFragment extends Fragment implements View.OnClickLis
         followupButton = (ImageButton) header.findViewById(R.id.followupButton);
         profileButton = (ImageButton) header.findViewById(R.id.profile_button);
 
+        //@Arthur: De-activate Complete and Terminate Buttons
         completeButton.setEnabled(false);
         terminateButton.setEnabled(false);
-      //  completeButton.setOnClickListener(this);
-      //  terminateButton.setOnClickListener(this);
+        //completeButton.setOnClickListener(this);
+       // terminateButton.setOnClickListener(this);
         followupButton.setOnClickListener(this);
         followupButton.setVisibility(View.GONE);
         profileButton.setOnClickListener(this);
@@ -795,6 +797,12 @@ public class ProgramOverviewFragment extends Fragment implements View.OnClickLis
         }
     }
 
+    public void enroll() {
+        EnrollmentDataEntryFragment enrollmentDataEntryFragment = EnrollmentDataEntryFragment.newInstance(mState.getOrgUnitId(), mState.getProgramId(), mState.getTrackedEntityInstanceId());
+        mNavigationHandler.switchFragment(enrollmentDataEntryFragment, EnrollmentDataEntryFragment.class.getName(), true);
+    }
+
+
     //@Arthur: method to verify if textfield is a valid date
     public static boolean isValidDate(String inDate){
         SimpleDateFormat dateFormat =  new SimpleDateFormat("yyyy-mm-dd");
@@ -810,12 +818,6 @@ public class ProgramOverviewFragment extends Fragment implements View.OnClickLis
         return true;
     }
 
-
-    public void enroll() {
-        EnrollmentDataEntryFragment enrollmentDataEntryFragment = EnrollmentDataEntryFragment.newInstance(mState.getOrgUnitId(), mState.getProgramId(), mState.getTrackedEntityInstanceId());
-        mNavigationHandler.switchFragment(enrollmentDataEntryFragment, EnrollmentDataEntryFragment.class.getName(), true);
-    }
-
     //@Arthur: method changes to render AgeToday in Trackercapture
     public void showDataEntryFragment(Event event, String programStage) {
         Bundle args = getArguments();
@@ -824,9 +826,8 @@ public class ProgramOverviewFragment extends Fragment implements View.OnClickLis
         if (event == null) {
             fragment = EventDataEntryFragment.newInstanceWithEnrollment(args.getString(ORG_UNIT_ID), args.getString(PROGRAM_ID), programStage, mForm.getEnrollment().getLocalId());
         } else if(progId.equals("u9FZUM7kn38")&&event!=null){
-            /*- The If-Else block below is used to add the AgeToday Feature, a requirement for the HPV Campaign Program -*/
-            fragment = EventDataEntryFragment.newInstanceWithEnrollment(args.getString(ORG_UNIT_ID), args.getString(PROGRAM_ID), programStage, mForm.getEnrollment().getLocalId());
-
+		 /*- This Else-If block below is used to add the AgeToday Feature, a requirement for the HPV Campaign Program -*/
+            fragment = EventDataEntryFragment.newInstanceWithEnrollment(args.getString(ORG_UNIT_ID), args.getString(PROGRAM_ID), programStage, event.getLocalEnrollmentId(), event.getLocalId());
             Enrollment enrollment = TrackerController.getEnrollment(event.getLocalEnrollmentId());
             //Enrollment enrollment = DataValueController.getEnrollment(event.getLocalEnrollmentId());
             List<TrackedEntityAttributeValue> teav = enrollment.getAttributes();
