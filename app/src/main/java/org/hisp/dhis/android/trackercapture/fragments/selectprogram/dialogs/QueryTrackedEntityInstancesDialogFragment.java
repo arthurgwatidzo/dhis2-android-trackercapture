@@ -47,6 +47,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -92,6 +94,8 @@ public class QueryTrackedEntityInstancesDialogFragment extends DialogFragment
     private DataValueAdapter mAdapter;
     private ListView mListView;
     private int mDialogId;
+    //@Arthur:Declare checkbox
+
     private FragmentActivity activity = null;
 
     private static final String EXTRA_PROGRAM = "extra:trackedEntityAttributes";
@@ -125,6 +129,8 @@ public class QueryTrackedEntityInstancesDialogFragment extends DialogFragment
         setStyle(DialogFragment.STYLE_NO_TITLE,
                 R.style.Theme_AppCompat_Light_Dialog);
 
+
+
     }
 
     @Override
@@ -149,6 +155,7 @@ public class QueryTrackedEntityInstancesDialogFragment extends DialogFragment
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+
         mListView = (ListView) view
                 .findViewById(R.id.simple_listview);
 
@@ -191,6 +198,8 @@ public class QueryTrackedEntityInstancesDialogFragment extends DialogFragment
         loadDialogButton.setOnClickListener(this);
 
         setDialogLabel(R.string.query_tracked_entity_instances);
+
+
     }
 
     @Override
@@ -237,6 +246,7 @@ public class QueryTrackedEntityInstancesDialogFragment extends DialogFragment
                 }
             }
         }
+
     }
 
     @Override
@@ -378,11 +388,14 @@ public class QueryTrackedEntityInstancesDialogFragment extends DialogFragment
             @Override
             public void run() {
                 QueryTrackedEntityInstancesResultDialogFragment dialog = QueryTrackedEntityInstancesResultDialogFragment.newInstance(trackedEntityInstances, orgUnit);
-                if(activity!=null) {
+                if (activity != null) {
                     dialog.show(activity.getSupportFragmentManager());
+
                 }
             }
         });
+
+
     }
 
     @Override
@@ -391,7 +404,9 @@ public class QueryTrackedEntityInstancesDialogFragment extends DialogFragment
         if(activity!=null) {
             if(activity instanceof FragmentActivity) {
                 this.activity = (FragmentActivity) activity;
+
             }
+
         }
     }
 }
