@@ -1132,7 +1132,7 @@ public class ProgramOverviewFragment extends Fragment implements View.OnClickLis
             }
         });
     }
-<<<<<<< HEAD
+
 
     public void sendEnrollment(final Enrollment enrollment) {
         JobExecutor.enqueueJob(new NetworkJob<Object>(0,
@@ -1146,6 +1146,6 @@ public class ProgramOverviewFragment extends Fragment implements View.OnClickLis
         });
     }
 }
-=======
-}
->>>>>>> 52821eff131a3e4be188d497eb83324802c70798
+
+
+
