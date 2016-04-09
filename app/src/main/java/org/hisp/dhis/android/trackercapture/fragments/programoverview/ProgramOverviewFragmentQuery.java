@@ -81,9 +81,15 @@ class ProgramOverviewFragmentQuery implements Query<ProgramOverviewFragmentForm>
         programOverviewFragmentForm.setTrackedEntityInstance(trackedEntityInstance);
 
         programOverviewFragmentForm.setDateOfEnrollmentLabel(program.getDateOfEnrollmentDescription());
-        programOverviewFragmentForm.setDateOfEnrollmentValue(Utils.removeTimeFromDateString(activeEnrollment.getDateOfEnrollment()));
+        if(activeEnrollment.getDateOfEnrollment() != null && !activeEnrollment.getDateOfEnrollment().isEmpty()) {
+            programOverviewFragmentForm.setDateOfEnrollmentValue(Utils.removeTimeFromDateString(activeEnrollment.getDateOfEnrollment()));
+        }
+
         programOverviewFragmentForm.setIncidentDateLabel(program.getDateOfIncidentDescription());
-        programOverviewFragmentForm.setIncidentDateValue(Utils.removeTimeFromDateString(activeEnrollment.getDateOfIncident()));
+        if(activeEnrollment.getDateOfIncident() != null && !activeEnrollment.getDateOfIncident().isEmpty()) {
+            programOverviewFragmentForm.setIncidentDateValue(Utils.removeTimeFromDateString(activeEnrollment.getDateOfIncident()));
+        }
+
         List<TrackedEntityAttributeValue> attributeValues = activeEnrollment.getAttributes();
         if(attributeValues!=null) {
             if(attributeValues.size() > 0) {
