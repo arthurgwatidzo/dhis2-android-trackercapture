@@ -840,49 +840,79 @@ public class ProgramOverviewFragment extends Fragment implements View.OnClickLis
 
             //If passport number is entered then :  String learnerDob   = teav.get(4).getValue();
             //String learnerDob   = teav.get(3).getValue(); Training Instance - Position for LearnerDOB when IDNumber is entered
-            String learnerDob   = teav.get(2).getValue(); //Staging Instance
+            String learnerDob = "";
+
+            if(teav.size() > 2) {
+                learnerDob = teav.get(2).getValue(); //Staging Instance
+            }
             // String learnerDob   = teav.get(3).getValue();
-            if(!isValidDate(learnerDob))
+            if(!isValidDate(learnerDob) && teav.size() > 3) {
                 learnerDob = teav.get(3).getValue();
+            }
             System.out.println("What is in learnerstring :" + learnerDob);
             //--Use Joda Time to compute the learner's age today
-            LocalDate birthdate = new LocalDate(learnerDob);
+            LocalDate birthdate = new LocalDate();
+            if(!learnerDob.equals("")) {
+                birthdate = new LocalDate(learnerDob);
+            }
             LocalDate now = new LocalDate();
             //Compute learners age today
-            Years learnersAgeToday = Years.yearsBetween(birthdate,now);
+            Years years = null;
+            if(!birthdate.equals(now)) {
+                years = Years.yearsBetween(birthdate,now);
+            }
+//            Years learnersAgeToday = Years.yearsBetween(birthdate,now);
 
 
 
-            System.out.println("The learners age today is:====>" + learnersAgeToday);
-            ageToday = String.valueOf(learnersAgeToday);
-            StringBuilder sbAgeToday = new StringBuilder(ageToday);
-            sbAgeToday.delete(0,1);
+//            System.out.println("The learners age today is:====>" + years);
+            if(years != null) {
+                ageToday = String.valueOf(years);
+                StringBuilder sbAgeToday = new StringBuilder(ageToday);
+                sbAgeToday.delete(0, 1);
 
-            sbAgeToday.append("EARS");
-            System.out.println("The OLD learners age is:" + ageToday);
-            //  String myDisplay = printLearnersAge();
-            displayAge = sbAgeToday.toString();
-            System.out.println("THE NEW LEARNERS AGE FIXED: " + displayAge);
-            //   List<ProgramStageDataElement> programStageDataElements = MetaDataController.getProgramStageDataElements
-            //(MetaDataController.getProgramStage(event.getProgramStageId()));
-            //  for(ProgramStageDataElement de: programStageDataElements) {
-            //       System.out.println("The data elements in the program are:" + de.getDataElement());
+                sbAgeToday.append("EARS");
+                System.out.println("The OLD learners age is:" + ageToday);
+                //  String myDisplay = printLearnersAge();
+                displayAge = sbAgeToday.toString();
+                System.out.println("THE NEW LEARNERS AGE FIXED: " + displayAge);
+
+                //   List<ProgramStageDataElement> programStageDataElements = MetaDataController.getProgramStageDataElements
+                //(MetaDataController.getProgramStage(event.getProgramStageId()));
+                //  for(ProgramStageDataElement de: programStageDataElements) {
+                //       System.out.println("The data elements in the program are:" + de.getDataElement());
 
 
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setMessage("The learner's Age Today is: " + displayAge)
+                        .setCancelable(false)
+                        .setTitle("Learner's Age Today Notification")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                            }
+                        });
 
-            builder.setMessage("The learner's Age Today is: " + displayAge)
-                    .setCancelable(false)
-                    .setTitle("Learner's Age Today Notification")
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.dismiss();
-                        }
-                    });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+            else {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-            AlertDialog dialog = builder.create();
-            dialog.show();
+                builder.setMessage("Error: " + " You didn't set the learner's date of birth!!")
+                        .setCancelable(false)
+                        .setTitle("ERROR")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+                }
+
 
         }
         else {
