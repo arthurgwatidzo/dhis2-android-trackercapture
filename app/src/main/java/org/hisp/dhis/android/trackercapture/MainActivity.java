@@ -29,6 +29,8 @@
 
 package org.hisp.dhis.android.trackercapture;
 
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -52,11 +54,14 @@ import org.hisp.dhis.android.trackercapture.fragments.selectprogram.SelectProgra
 public class MainActivity extends AppCompatActivity implements INavigationHandler {
     public final static String TAG = MainActivity.class.getSimpleName();
     private OnBackPressedListener mBackPressedListener;
-
+    String versionName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        versionName = BuildConfig.VERSION_NAME;
+
 
         LoadingController.enableLoading(this, ResourceType.ASSIGNEDPROGRAMS);
         LoadingController.enableLoading(this, ResourceType.OPTIONSETS);
@@ -95,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements INavigationHandle
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                setTitle("Tracker Capture");
+                setTitle("Tracker Capture " + versionName);
             }
         });
         switchFragment(new SelectProgramFragment(), SelectProgramFragment.TAG, true);
