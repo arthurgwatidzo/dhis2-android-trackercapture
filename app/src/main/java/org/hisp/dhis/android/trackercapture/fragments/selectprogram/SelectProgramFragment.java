@@ -88,6 +88,7 @@ public class SelectProgramFragment extends org.hisp.dhis.android.sdk.ui.fragment
     @Override
     protected TrackedEntityInstanceAdapter getAdapter(Bundle savedInstanceState) {
         return new TrackedEntityInstanceAdapter(getLayoutInflater(savedInstanceState));
+
     }
 
     @Override
@@ -95,6 +96,7 @@ public class SelectProgramFragment extends org.hisp.dhis.android.sdk.ui.fragment
         View header = getLayoutInflater(savedInstanceState).inflate(
                 R.layout.fragment_select_program_header, mListView, false
         );
+
         mRegisterEventButton = (FloatingActionButton) header.findViewById(R.id.register_new_event);
         mQueryTrackedEntityInstancesButton = (FloatingActionButton) header.findViewById(R.id.query_trackedentityinstances_button);
         mUpcomingEventsButton = (FloatingActionButton) header.findViewById(R.id.upcoming_events_button);

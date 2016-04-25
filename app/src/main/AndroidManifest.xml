@@ -52,6 +52,10 @@
             android:windowSoftInputMode="adjustPan" >
         </activity>
 
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="c4c332ca45fdcfc732ed0eab75d223664058f7d7" />
+
         <receiver
             android:name="org.hisp.dhis.android.sdk.services.PeriodicSynchronizer">
         </receiver>
